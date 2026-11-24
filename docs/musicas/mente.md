@@ -1,0 +1,35 @@
+# Mente
+
+Letra original do autor. Faixa base: "Remix of Mente Vit – Treblo" (Suno), 190,8 s, 44,1 kHz, 90,7 BPM, Lá maior. As stems da IA somam a faixa com resíduo de −22 dB (separadas, não exatas). Transcrição com tempos: [`mente.srt`](mente.srt) (o bloco 28 tinha o tempo `00:01:00:50,800`, corrigido para `00:01:50,800`).
+
+## Intenção do autor (24/11/2026)
+
+> Começa mais intimista e lenta; no pré-refrão ("Entra outra vez na minha vida") já dá uma acelerada, com a banda imprimindo mais corpo, ritmo e groove; no refrão ("Mente, me engana") explode e troca a levada da música toda para um groove irresistível.
+
+## Mapa (tempos do SRT → tempos da grade)
+
+| Seção | Tempo (s) | Grade (tempos) | Letra |
+|---|---|---|---|
+| intro | 0–10,9 | 0–16 | — |
+| verso 1 | 10,9–21,8 | 16–32 | As lágrimas que eu vejo… |
+| verso 2 | 21,8–32,7 | 32–48 | As juras que eu escuto… |
+| pré-refrão | 32,8–44,6 | 48–68 | Entra outra vez na minha vida… |
+| refrão | 44,7–69,7 | 68–104 | Mente, me engana, faz uma cena… |
+| pós-refrão | 69,8–82,8 | 104–124 | Vem me tirar da solidão… |
+| instrumental | 83,5–93,8 | 124–140 | — |
+| pré-refrão 2 | 93,8–105,7 | 140–158 | (E) entra outra vez… |
+| refrão 2 | 105,8–129,8 | 158–196 | — |
+| refrão repetido | 129,9–154,9 | 196–232 | ("Sabe que eu… sabe que eu amo novela") |
+| final | 155,0–168,6 | 232–254 | Vem me tirar da escuridão… |
+| fim instrumental | 168,6–190,8 | 254–fim | — |
+
+**Paradas que existem na faixa** (banda muda, voz sozinha): 44,80–46,15 ("Mente," a capela); 47,70–48,15; 83,20–83,50; 99,05–99,50; 104,30–104,85; 106,15–106,65.
+
+**Breques sugeridos pela quebra de linha da letra** ("Fala que eu sou / O amor da tua vida", "Sabe que eu / Amo novela", "Me diz que eu sou / O teu grande amor"). O cantor sustenta o "sou" sem pausa, então a banda dá um golpe e cala sob a nota e volta no "o amor". Tempos de palavra (whisper): golpe/volta em 57,5/58,5 · 78,8/79,5 · 110,9/112,2 · 118,9/119,8 · 134,8/136,2 · 142,8/143,8 · 163,5/164,7.
+
+## Versões
+
+| Versão | O que mudou | Medidas (master −12 LUFS) |
+|---|---|---|
+| v1 (`tools/arrange/rw*`) | arranjo contínuo, seções só com mais/menos força | refrão +2,6 LU sobre o verso; pré igual ao verso; o autor achou "muito flat" |
+| v2 (`tools/arrange/v2/`) | três levadas (verso em meio-tempo intimista, pré acelerado, refrão pagode explosivo), convenção + rolo antes das paradas, prato na entrada, sopros respondendo nos buracos da voz, solo de sax com a melodia do refrão no instrumental, palmas no refrão repetido, final intimista que cresce, encerramento com acorde. Voz automatizada por seção | banda sozinha: refrão **+9,4 dB** sobre o verso 1; master: pré +3,0, refrão +4,6, final −0,5, fim +4,0 LU; limiter p99 2,8 dB; Vorbis −1,76 dBTP |

@@ -34,6 +34,18 @@ Primeira versão feita em 24/11/2026 com a faixa gerada **"Mente"**: arranjo nov
 - Harmonia extraída do áudio da IA: conferir sempre contra a melodia.
 - Estrutura, seções e *stops* ainda são escritos à mão no topo de `rw3_compose.py`.
 
+## v2: dramaturgia por seção (24/11/2026)
+
+O autor achou a v1 "muito flat": o pré-refrão não muda nada e o refrão entra sem explosão. A v2 (`tools/arrange/v2/`, ficha completa em `docs/musicas/mente.md`) trocou "mais força" por **levadas diferentes**:
+
+| Estado | Seções | Levada |
+|---|---|---|
+| intimista ("lento") | intro, versos, final | meio-tempo: violão dedilhado, baixo em notas longas (2 tempos), surdo só no 1, aro no 3, ganzá em colcheias; no verso 2 o cavaco entra em acordes longos e o pandeiro, suave |
+| acelera | pré-refrão | surdo marcando 1 e 2, baixo em colcheias sincopadas, cavaco cortando colcheias com acento no contratempo, aro no contratempo, pandeiro/ganzá em semicolcheias, cordas crescendo; no fim, convenção + rolo de repique + parada |
+| explode | refrão, pós, solo, fim | pagode completo: cavaco em partido-alto, tamborim teleco-teco, repique, tantã, surdo com antecipação, baixo oitavado com aproximação, piano elétrico, cordas, prato na entrada (depois da parada), sopros respondendo nos buracos da voz, palmas no refrão repetido |
+
+Mais: estrutura tirada do SRT do autor; breques nos pontos onde a letra quebra a linha (tempos de palavra pelo whisper); solo de sax com a melodia do refrão 1 (pyin) no instrumental; encerramento com convenção e acorde final; **automação da voz por seção**.
+
 ## Próximos passos naturais
 
 1. Detectar seções e *stops* automaticamente.

@@ -21,6 +21,7 @@ Registro de decisões por faixa: o que foi pedido, o que foi feito, com que núm
 | **Referência ao vivo** (banda real) | analisar mix e MIDIs | ver `04-groove-e-camadas.md` | números de referência | `rf*` |
 | **Mente (faixa IA) vs referência** | comparar instrumentos, camadas, buracos, timbres | ver `04-groove-e-camadas.md` | diagnóstico | `ai*`, `lay*`, `tim1` |
 | **Mente (arranjo reescrito)** | reescrever o MIDI inteiro e renderizar com o stem vocal + noção de master | ver `05-reescrita-de-arranjo.md` | −12 LUFS, `.mid` com 8 trilhas | `rw*` |
+| **Mente (arranjo v2)** | "muito flat": versos intimistas, pré que acelera, refrão que explode e troca a levada | três levadas, transições, breques na quebra de linha da letra, sopros, solo de sax, automação da voz; ver `docs/musicas/mente.md` | −12 LUFS, refrão +4,6 LU sobre o verso | `tools/arrange/v2/` |
 
 Da conversa "Transcrição MIDI" (detalhes em `06-transcricao-midi.md`):
 
