@@ -1,0 +1,16 @@
+# Lições transversais
+
+Erros que já aconteceram e o princípio que fica de cada um.
+
+1. **Achar a medida que explica a queixa antes de mexer.** "Perdeu punch" foi o glue disparado pelo surdo; "perdeu impacto" foi o mid do refrão 1 dB abaixo; "apressado" foi uma emenda uma semicolcheia fora; "estridente" foi a presença empurrando o metal para o limiter.
+2. **Comparar maçã com maçã.** Punch no stem de bateria ≠ punch na mix inteira. O "12 contra 21" do arranjo reescrito era mix contra stem; no mesmo método deu 16 contra 21. O mesmo vale para loudness (gated vs janelas) e acentos (com ou sem a dica de tempo).
+3. **O beat tracker trava no dobro ou na metade.** Sempre passe `start_bpm` próximo do real e `tightness` alta; confira o microtempo (desvios de ~35 ms indicam grade errada).
+4. **Correlação de envelope é ruim para alinhar emendas.** Use coincidência de batidas por banda.
+5. **Tomadas regeneradas pela IA mudam a dobra estéreo.** Prefira transplantar do próprio cantor.
+6. **Corte em pausa ou consoante.** Crossfade curto, afinação conferida.
+7. **Harmonia extraída do áudio deve ser conferida contra a melodia.** Acorde com ajuste bom pode bater de frente com a nota sustentada da voz (o Ré menor contra o Dó#).
+8. **Picos de codec.** Teto −2 dBTP acima de −14 LUFS; topo da IA acima de 16,5 kHz atenuado; o AAC nativo do ffmpeg é pessimista com transientes secos.
+9. **Variação humana vem de gesto gravado,** não de nível aplicado ao mesmo som (shaker real ida/volta > shaker robótico com níveis aleatórios). Pandeiro recortado falha porque as platinelas não param.
+10. **Não achate o que a música tem de contraste.** Intro e ponte podem ficar mais baixas; o refrão precisa crescer. O ride de refrão entra **dentro da pausa** para não ser percebido.
+11. **Basic Pitch:** descarte os pitch bends (+1/3 de semitom permanente) e desconfie de notas em stems quase mudos (vazamento e harmônicos).
+12. **Trate o vocal como sagrado.** Toda edição deve provar que o resto ficou idêntico (amostras fora da janela, ou resíduo em dB).

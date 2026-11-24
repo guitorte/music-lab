@@ -1,0 +1,10 @@
+numpy
+scipy
+soundfile
+pyloudnorm
+librosa
+numba
+mido
+pretty_midi
+faster-whisper
+# sistema: ffmpeg, fluidsynth, fluid-soundfont-gm

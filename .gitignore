@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+*.wav
+*.flac
+*.mp3
+*.m4a
+*.ogg
+*.opus
+*.npy
+*.npz
+*.zip
+out/
