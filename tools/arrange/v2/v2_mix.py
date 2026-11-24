@@ -33,7 +33,7 @@ for k,z in P.items():
 wet=verb(P['cavaco']*0.5+P['violao']+P['epiano']+P['pad']*0.6+P['cordas']+P['sopros']*0.7+P['sax']*0.8)*10**(-14/20)
 band=sum(P.values())+wet
 lb=mt.integrated_loudness(band); lv=mt.integrated_loudness(voc)
-vg=10**(((lb-3.0)-lv)/20)
+vg=10**(((lb-3.0)-lv)/20); vg0=vg
 # automação da voz por seção: alvo voz − banda (LU); transições nas pausas entre frases
 SECV=[(0,21.8,3.5),(21.8,32.7,3.0),(32.7,44.6,-0.5),(44.6,69.7,-2.5),(69.7,83.3,-2.0),(93.6,105.7,-0.5),(105.7,154.9,-2.5),(154.9,163.4,2.5),(163.4,190.8,-2.0)]
 tt=np.arange(N)/fs; gdb=np.zeros(N); 
@@ -46,7 +46,8 @@ gdb=uniform_filter1d(gdb,size=int(0.25*fs)); voc=voc*vg*10**(gdb/20)[:,None]; vg
 mix=band+voc
 print(f'band {lb:.1f}  vocal {lv:.1f} -> {lb-3.0:.1f}  mix {mt.integrated_loudness(mix):.1f}  peak {20*np.log10(np.abs(mix).max()):.1f}')
 mix=signal.sosfiltfilt(signal.butter(4,16500,'lowpass',fs=fs,output='sos'),mix,axis=0)
-mix*=10**((-16-mt.integrated_loudness(mix))/20)
+Gn=10**((-16-mt.integrated_loudness(mix))/20); mix*=Gn
+np.save(f'{R}/components.npy',np.array([{'P':P,'wet':wet,'voc':voc,'G':Gn,'vg_base':vg0,'gdb':gdb}],dtype=object),allow_pickle=True)
 sf.write(f'{R}/mix.wav',mix,fs,subtype='FLOAT')
 G=10**((-16-mt.integrated_loudness(band+voc*vg))/20)
 a=np.abs(mix).max(1); top=np.argsort(a)[-300:]
