@@ -9,7 +9,7 @@ Imprime tempo, molde de acentos por semicolcheia, punch do surdo, equilíbrio do
 import argparse, glob, os, sys
 import numpy as np, soundfile as sf, pyloudnorm as pyln
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-from lib.metrics import accent_template, surdo_punch, stem_balance, layer_report
+from lib.metrics import accent_template, slot_presence, surdo_punch, stem_balance, layer_report
 
 REF = {'bpm': 79.5, 'acentos': [1.00, 0.23, 0.99, 0.59], 'punch': 21.1, 'camadas': 5.56,
        'balanco': {'vocals': -4.7, 'drums': -4.4, 'bass': -10.8, 'guitar': -9.0, 'piano': -15.0, 'other': -14.3}}
@@ -24,7 +24,8 @@ band = sum(v for k, v in S.items() if k != 'vocals')
 dr = S.get('drums', band); t0, t1 = 8, n / fs - 8
 acc, micro, bpm = accent_template(dr, fs, t0, t1, a.bpm)
 print(f'tempo {bpm:.1f} BPM (ref {REF["bpm"]})')
-print('acentos 16ª:', np.round(acc, 2), '(ref', REF['acentos'], ') | microtempo ms:', np.round(micro, 1))
+print('acentos 16ª (força quando há golpe):', np.round(acc, 2), '(ref', REF['acentos'], ') | microtempo ms:', np.round(micro, 1))
+print('presença 16ª nos agudos (% dos tempos):', np.round(slot_presence(dr, fs, t0, t1, a.bpm)).astype(int), '(Traição 88/34/78/71)')
 print(f'punch surdo (stem de bateria) {surdo_punch(dr[int(t0*fs):int(t1*fs)], fs):.1f} dB (ref {REF["punch"]})')
 print('equilíbrio LU vs soma:', {k: float(v) for k, v in stem_balance(S, m).items()}, '\n  ref:', REF['balanco'])
 if 'vocals' in S: print(f'voz vs banda {m.integrated_loudness(S["vocals"]) - m.integrated_loudness(band):+.1f} LU (ref −3.1)')

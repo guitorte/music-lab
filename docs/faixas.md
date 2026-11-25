@@ -36,3 +36,4 @@ Preferências do autor que aparecem em todo o diário:
 - Refrão como ponto alto: entrada com impacto.
 - Pausas e respiros preservados ("não perdeu uma pausa mínima?").
 - Groove acima de volume.
+| **Traição** (referência gravada, outros autores) | analisar timbres, groove, arranjo e evolução dinâmica | stems BS-RoFormer + MIDIs do bakeoff; presença por semicolcheia, densidade por seção, paradas tempo a tempo; comparação de timbre com Mente Vit | `docs/musicas/traicao-referencia.md`; nova métrica `slot_presence` | `tr_*` |
