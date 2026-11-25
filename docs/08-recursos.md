@@ -88,9 +88,101 @@ O Demucs foi arquivado em jan./2025; os RoFormers são o caminho atual.
 | ⭐ BRID | 367 faixas de instrumentos rítmicos brasileiros (samba, partido-alto, samba-enredo, capoeira, marcha), gravadas em estúdio; carregável pelo `mirdata`. Fonte para moldes de acento e microtempo de surdo, pandeiro e tamborim reais. | https://zenodo.org/records/14051323 |
 | Separação de percussão brasileira | U-Net treinada no BRID para isolar o surdo | https://arxiv.org/abs/2503.04995 |
 
+## 10. Áudio e voz em geral
+
+Fora do fluxo principal, mas úteis em qualquer trabalho de voz e áudio. Clonar ou converter voz só com voz própria, voz liberada ou voz gerada por você; a voz de uma pessoa real exige autorização dela.
+
+### Clonar voz falada (texto → voz)
+
+| Recurso | O que é | Link |
+|---|---|---|
+| Voxtral TTS | Mistral, 4B, 9 línguas. Os pesos abertos (CC BY-NC) trazem só vozes prontas; clonar exige a API | https://huggingface.co/mistralai/Voxtral-4B-TTS-2603 |
+| X-Voice | 0,4B; clona sem transcrição da referência, em 30 línguas | https://github.com/sunnyxrxrx/X-Voice |
+| VoxCPM2 | Clonagem sem treino e controle da voz por texto | https://github.com/OpenBMB/VoxCPM |
+| XTTS v2 | Coqui, multilíngue, clássico | https://huggingface.co/coqui/XTTS-v2 |
+| Fish Speech | TTS com clonagem | https://github.com/fishaudio/fish-speech |
+| CosyVoice | TTS com clonagem | https://github.com/FunAudioLLM/CosyVoice |
+| IndexTTS-2 | TTS com controle de duração e emoção | https://github.com/index-tts/index-tts |
+| Chatterbox | TTS aberto da Resemble | https://github.com/resemble-ai/chatterbox |
+
+### Converter voz e canto (trocar o timbre, manter a interpretação)
+
+| Recurso | O que é | Link |
+|---|---|---|
+| ⭐ Seed-VC | Conversão de fala e canto sem treino, com 1 a 30 s de referência. Daria um timbre consistente à voz do Suno entre versões | https://github.com/Plachtaa/seed-vc |
+| RVC | O clássico; treina um modelo por voz | https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI |
+| R2-SVC | Feito para voz com ruído e artefatos de separação | https://arxiv.org/abs/2510.20677 |
+| Poly-SVC | Preserva as harmonias que sobram no stem de voz | https://arxiv.org/abs/2605.12310 |
+
+### Editar fala e canto
+
+| Recurso | O que é | Link |
+|---|---|---|
+| AuK | Tencent, 1,5B: insere, apaga ou troca trechos falados e cantados; também troca letra preservando melodia, remove respirações, limpa e separa | https://huggingface.co/tencent/AuK |
+| MeloDISinger | Troca a letra cantada preservando melodia e duração | https://arxiv.org/abs/2606.30580 |
+
+### Limpar e restaurar
+
+| Recurso | O que é | Link |
+|---|---|---|
+| ClearerVoice-Studio | Realce, separação, super-resolução e extração da voz de uma pessoa | https://github.com/modelscope/ClearerVoice-Studio |
+| StuPASE | Cisco: tira ruído e reverb com poucas alucinações. Só fala, 16 kHz | https://huggingface.co/cisco-ai/stupase |
+| DPDFNet | Evolução do DeepFilterNet2, tempo real, tem versão 48 kHz | https://github.com/ceva-ip/DPDFNet |
+| Resemble Enhance | Remoção de ruído e realce de fala | https://github.com/resemble-ai/resemble-enhance |
+| AudioSR | Devolve agudos perdidos, até 48 kHz | https://github.com/haoheliu/versatile_audio_super_resolution |
+| AudioLBM | Super-resolução que supera o AudioSR; vai até 192 kHz | https://audiolbm.github.io/ |
+| SAGA-SR | Super-resolução guiada por texto (KAIST) | https://arxiv.org/abs/2509.24924 |
+
+### Transcrever e alinhar a letra
+
+| Recurso | O que é | Link |
+|---|---|---|
+| ⭐ WhisperX | Tempo por palavra com alinhamento forçado; mais preciso que o whisper puro nos breques | https://github.com/m-bain/whisperX |
+| lyric-align | A letra já está certa, só faltam os tempos; exporta LRC, SRT, ASS, JSON | https://pypi.org/project/lyric-align/ |
+| UltraSinger | Letra + nota cantada por palavra (formato karaokê) | https://github.com/rakuri255/UltraSinger |
+| Montreal Forced Aligner | Alinhador tradicional por fonemas | https://github.com/MontrealCorpusTools/Montreal-Forced-Aligner |
+| HeartTranscriptor | Whisper ajustado para letra em música | https://huggingface.co/HeartMuLa/HeartTranscriptor-oss |
+
+### Afinação
+
+| Recurso | O que é | Link |
+|---|---|---|
+| Parselmouth (Praat) | Detecção de altura e PSOLA em Python: base de um autotune simples | https://github.com/YannickJadoul/Parselmouth |
+| pyworld (WORLD) | Separa altura, envelope e aperiodicidade para ressintetizar afinado | https://github.com/JeremyCCHsu/Python-Wrapper-for-World-Vocoder |
+| Diff-Pitcher | Correção de afinação neural (difusão) | https://github.com/haidog-yaqub/DiffPitcher |
+| KaraTuner | Correção de afinação neural (Tencent Music) | https://arxiv.org/abs/2110.09121 |
+
+### "DAW sem DAW" em Python
+
+| Recurso | O que é | Link |
+|---|---|---|
+| ⭐ DawDreamer | Hospeda instrumentos e efeitos VST, Faust, automação e time-stretch; roda no Linux. Renderizar o MIDI com VSTs gratuitos em vez do banco GM | https://github.com/DBraun/DawDreamer |
+| pedalboard | Spotify: efeitos prontos e plugins VST3 | https://github.com/spotify/pedalboard |
+
+### Gerar a música inteira (aberto)
+
+| Recurso | O que é | Link |
+|---|---|---|
+| YuE | Da letra à música completa, com voz e acompanhamento | https://github.com/multimodal-art-projection/YuE |
+| HeartMuLa | Estilo controlado por seção; Apache 2.0 | https://github.com/HeartMuLa/heartlib |
+| DiffRhythm 2 | Músicas de até 210 s, Apache 2.0 | https://github.com/xiaomi-research/diffrhythm2 |
+| LeVo / LeVo 2 | Tencent SongGeneration | https://github.com/tencent-ailab/songgeneration |
+
+### Modelos que "entendem" áudio (um segundo ouvido)
+
+| Recurso | O que é | Link |
+|---|---|---|
+| ⭐ Qwen3-Omni Captioner | Descrições detalhadas de qualquer áudio, Apache 2.0. Conferir "o refrão entra explosivo?" antes de entregar | https://huggingface.co/Qwen/Qwen3-Omni-30B-A3B-Captioner |
+| Music Flamingo | NVIDIA, especializado em música (pesquisa, não comercial) | https://huggingface.co/nvidia/music-flamingo-hf |
+| MOSS-Audio | 4B e 8B, instruct e thinking | https://github.com/OpenMOSS/MOSS-Audio |
+| Eureka-Audio | 1,7B, compete com modelos de 4 a 18 vezes maiores | https://github.com/Alittleegg/Eureka-Audio |
+
 ## Próximos testes sugeridos
 
 1. Beat This! no lugar da grade atual, comparando o desvio contra os onsets.
 2. All-In-One para gerar o mapa de seções automaticamente.
 3. BRID para tirar moldes de groove por instrumento, em vez de um molde único.
 4. ACE-Step 1.5 (cover/repaint) e YingMusic-Singer (troca de palavras), quando houver GPU (Colab).
+5. DawDreamer com VSTs gratuitos para renderizar o MIDI melhor que o banco GM.
+6. WhisperX no lugar do whisper para os tempos dos breques.
+7. Qwen3-Omni Captioner como segundo ouvido antes de cada entrega.
