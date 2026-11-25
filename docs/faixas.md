@@ -37,3 +37,4 @@ Preferências do autor que aparecem em todo o diário:
 - Pausas e respiros preservados ("não perdeu uma pausa mínima?").
 - Groove acima de volume.
 | **Traição** (referência gravada, outros autores) | analisar timbres, groove, arranjo e evolução dinâmica | stems BS-RoFormer + MIDIs do bakeoff; presença por semicolcheia, densidade por seção, paradas tempo a tempo; comparação de timbre com Mente Vit | `docs/musicas/traicao-referencia.md`; nova métrica `slot_presence` | `tr_*` |
+| **Mente (Vit) com arranjo de Traição** | adaptar todo o instrumental de Traição ao MIDI vocal | padrões medidos de Traição (percussão, baixo, cavaco, violão, teclado, textura) nos acordes e na forma de Mente; parada + virada antes dos refrões; Rhodes estéreo via sfizz; plate Dragonfly na voz seca via DawDreamer | master −13 LUFS, contorno de seções a ±0,5 LU de Traição, punch 13,5 dB | `vt_*` |
