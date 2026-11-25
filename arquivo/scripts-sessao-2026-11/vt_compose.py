@@ -67,12 +67,13 @@ for b in range(0,END,2):
     if parada: pass
     elif vir:
         if vir==1: add('surdo',41,T(b),0.3,95); add('tanta',62,T(b),0.1,96,0)      # 1 golpe
-        for k in range(2 if vir==1 else 0,8):                                        # crescendo de 2 compassos (−27 -> −15 dB)
+        for k in range(2 if vir==1 else 0,8 if vir==1 else 6):                       # crescendo (−27 -> −15 dB); última colcheia vazia = respiro do drop
             x=((vir-1)*8+k)/16; add('tanta',62,T(b,k),0.1,44+76*x,k)
             if vir==2: add('pandeiro',54,T(b,k),0.08,40+70*x,k)
-        if vir==2: add('surdo',41,T(b+1),0.3,110); add('surdo',41,T(b+1,3),0.15,100,3)
+        if vir==2: add('surdo',41,T(b+1),0.3,110)
     elif est=='cheio':
-        add('surdo',41,T(b),0.15,72); add('surdo',41,T(b+1),0.45,122); add('surdo',41,T(b+1,3),0.15,96,3)
+        add('surdo',41,T(b),0.15,72)
+        add('surdo',41,T(b+1),0.45,122); add('surdo',41,T(b+1,3),0.15,96,3)
         for bt in (0,1):
             for k,(vp,vt) in enumerate(zip([120,67,118,84],[120,52,100,124])):
                 add('pandeiro',54,T(b+bt,k),0.08,vp*E,k); add('tanta',62,T(b+bt,k),0.1,vt*E,k)
@@ -84,7 +85,6 @@ for b in range(0,END,2):
     elif est=='pre':
         add('surdo',41,T(b+1),0.35,84)
         for k,v in [(0,56),(4,62)]: add('ganza',70,T(b+k//4,k%4),0.07,v,k)
-    if chorus_land: add('pratos',49,T(b),1.6,112)
     if sec=='refrao3' and b==[a for n,a,_,_ in SEC if n=='refrao3'][0]: add('pratos',49,T(b),1.4,100)
     # =============== BAIXO (Traição: leve = ataque no 2º tempo; pré = só o 2º; cheio = linha contínua, fundamental no 1º)
     def appr(): return nr-1 if nr!=r else r+7-12
@@ -97,14 +97,15 @@ for b in range(0,END,2):
         add('bass',r,T(b+1),per*0.18,98); add('bass',tone(l,2),T(b+1,1),per*0.2,80,1); add('bass',appr(),T(b+1,3),per*0.2,86,3)
     else:   # cheio
         v=bar%4
-        add('bass',r,T(b),per*0.38,110); add('bass',r,T(b,1),per*0.2,72,1); add('bass',tone(l,2),T(b,3),per*0.22,92,3)
+        add('bass',r,T(b),per*(0.9 if chorus_land else 0.38),124 if chorus_land else 110); add('bass',r,T(b,1),per*0.2,72,1); add('bass',tone(l,2),T(b,3),per*0.22,92,3)
         add('bass',r+12 if v==1 else r,T(b+1),per*0.24,104); add('bass',tone(l,1),T(b+1,1),per*0.2,82,1)
-        add('bass',tone(l,2),T(b+1,2),per*0.2,86,2); add('bass',appr(),T(b+1,3),per*0.22,94,3)
+        if vir!=2: add('bass',tone(l,2),T(b+1,2),per*0.2,86,2); add('bass',appr(),T(b+1,3),per*0.22,94,3)
     # =============== CAVACO (cheio: 16ªs com acento na 2ª, 3ª, 5ª e 8ª do compasso; leve e pré mais ralos)
     cv=voicing(l,62,81,prev['cav']); prev['cav']=cv
     pat={'cheio':[80,95,110,70,115,72,80,98],'leve':[85,0,0,80,90,85,0,100],'pre':[60,0,95,0,100,0,0,90],'abertura':[0]*8}[est]
     if parada: pat=[78,0,0,0,0,0,0,0]
     if vir==1: pat=[0,0,95,0,100,0,0,90]
+    if vir==2: pat=pat[:6]+[0,0]                    # respiro: cavaco também para na última colcheia
     for k,v in enumerate(pat):
         if v:
             d=2*per*0.95 if parada else per*0.22
@@ -119,7 +120,9 @@ for b in range(0,END,2):
         [add('violao',p,T(b+1),per*1.6,98) for p in vv]
     elif est=='cheio':
         add('violao',vb,T(b),per*0.5,78)
-        for k,v in [(2,66),(3,58),(4,84),(6,66),(7,60)]: [add('violao',p,T(b+k//4,k%4),per*0.22,v,k) for p in vv]
+        for k,v in [(2,66),(3,58),(4,84),(6,66),(7,60)]:
+            if vir==2 and k>=6: continue
+            [add('violao',p,T(b+k//4,k%4),per*0.22,v,k) for p in vv]
     # =============== TECLADO (Rhodes estéreo; abertura: acorde no 1º + notas de cima; leve: no tempo; pré: antecipações; cheio: tapete)
     kv=voicing(l,55,79,prev['kb']); prev['kb']=kv; top=sorted(kv)[-2:]
     if parada: [add('epiano',p,T(b),2*per*0.98,60) for p in kv]
@@ -150,6 +153,27 @@ lf='C'; kv=voicing(lf,55,79,prev['kb'])+[74]; cv=voicing(lf,62,81,prev['cav'])
 [add('epiano',p,T(END),4*per,70) for p in kv]; add('bass',root(lf),T(END),4*per,86); [add('cavaco',p,T(END),4*per,70) for p in cv]
 [add('violao',p,T(END),4*per,70) for p in voicing(lf,52,67,prev['vio'])]; [add('strings',p,T(END),4.5*per,62) for p in [48,64,67,72]]
 add('surdo',41,T(END),0.5,90); add('pratos',49,T(END),2.5,80)
+# ---- entrada do refrão como na v2 aprovada (medida em vt_entrada2): a banda some de 2 semicolcheias antes do tempo 1
+#      até a 3ª semicolcheia do refrão (só a voz e a cauda do Rhodes); pancada + crash na 3ª 16ª; banda toda no 2º tempo
+DROP=[]
+for cb in CHORUS:
+    g0=T(cb-1,2)-0.012; g1=T(cb,2)-0.012; DROP.append((round(g0,3),round(g1,3)))
+    for k in P:
+        keep=[]
+        for n in P[k]:
+            p_,t_,d_,v_=n
+            if g0<=t_<g1: continue                                   # nada começa dentro do buraco
+            if k!='epiano' and t_<g0<t_+d_: n=[p_,t_,max(0.03,g0-t_),v_]   # sustentados cortam no início do buraco
+            keep.append(n)
+        P[k]=keep
+    ts=T(cb,2)
+    add('surdo',41,ts,0.45,127,jit=0); add('surdo',41,ts,0.45,127,jit=0); add('bass',root(CH(cb)),ts,per*0.3,127,jit=0)   # pancada dobrada + baixo
+    add('tanta',62,ts,0.12,124,2); add('pandeiro',54,ts,0.1,124,2); add('repique',65,ts,0.1,110,2)
+    add('pratos',49,ts,2.0,120)
+    lb=CH(cb); kvb=voicing(lb,55,79); [add('epiano',p,T(cb+1),per*0.95,70) for p in kvb]
+    if OUT_V.get(sec_of(cb)[0],0)>0:
+        rr,_=parse(lb); [add('strings',p,T(cb+1),per*1.02,OUT_V[sec_of(cb)[0]]) for p in [48+((rr-48)%12)]+voicing(lb,57,79,n=2)]
+print('drops (buraco s):',DROP)
 P={k:sorted(v,key=lambda x:x[1]) for k,v in P.items()}
 print({k:len(v) for k,v in P.items() if v}); np.save(f'{R}/parts.npy',np.array([P],dtype=object),allow_pickle=True)
 json.dump({'SEC':[(n,a,c,e) for n,a,c,e in SEC],'PARADA':sorted(PARADA),'CHORUS':CHORUS,'END':END},open(f'{R}/forma.json','w'))

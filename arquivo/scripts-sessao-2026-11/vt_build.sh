@@ -11,5 +11,5 @@ python3 -c "
 import soundfile as sf, numpy as np
 a,fs=sf.read('r/epiano.wav'); b,_=sf.read('/tmp/ep_sfz.wav'); N=len(a); b=b[:N] if len(b)>=N else np.pad(b,((0,N-len(b)),(0,0)))
 pk=np.abs(b).max(); sf.write('r/epiano.wav',b/pk*0.9 if pk>0.9 else b,fs,subtype='PCM_24')"
-rm -f /tmp/ep_sfz.wav w/*[!k].wav r/pad.wav r/sopros.wav r/sax.wav
-python3 /home/claude/scripts/vt_mix.py 2>&1 | grep -v -i warn | tail -3
+cp w/pratos.wav r/pratos_gm.wav; rm -f /tmp/ep_sfz.wav w/*[!k].wav r/pad.wav r/sopros.wav r/sax.wav
+echo render ok

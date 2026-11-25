@@ -25,12 +25,24 @@ def dragonfly(z,plugin,params):
     return np.pad(y,((0,max(0,len(z)-len(y))),(0,0)))[:len(z)].astype(np.float64)
 S0={n:(a,c) for n,a,c,e in F['SEC']}
 hp=lambda z,f: signal.sosfiltfilt(signal.butter(2,f,'highpass',fs=fs,output='sos'),z,axis=0)
-P={'surdo':ld('surdo'),'percussao':ld('percussao'),'pratos':pan(ld('pratos'),0.15),'baixo':pan(ld('baixo'),0),'cavaco':pan(ld('cavaco'),0.3),
+def hshelf(z,f0,gdb,q=0.7):   # RBJ high-shelf
+    A=10**(gdb/40); w=2*np.pi*f0/fs; al=np.sin(w)/(2*q); c=np.cos(w)
+    b=[A*((A+1)+(A-1)*c+2*np.sqrt(A)*al),-2*A*((A-1)+(A+1)*c),A*((A+1)+(A-1)*c-2*np.sqrt(A)*al)]
+    a_=[(A+1)-(A-1)*c+2*np.sqrt(A)*al,2*((A-1)-(A+1)*c),(A+1)-(A-1)*c-2*np.sqrt(A)*al]
+    return signal.lfilter(np.array(b)/a_[0],np.array(a_)/a_[0],z,axis=0)
+# prato mais brilhante (mesma correção da v3): crash GM + 0,6x VCSL + shelf +3 dB em 8 kHz
+import os
+CRASH=os.environ.get('CRASH','normal'); OUT=os.environ.get('OUT','Mente_Vit_Traicao')
+_v=ld('pratos')
+if CRASH=='forte':
+    _g=ld('pratos_gm'); _g=_g*np.sqrt((_v**2).mean()/max((_g**2).mean(),1e-12)); PRATOS=hshelf(_g+0.6*_v,8000,3.0)
+else: PRATOS=_v
+P={'surdo':ld('surdo'),'percussao':ld('percussao'),'pratos':pan(PRATOS,0.15),'baixo':pan(ld('baixo'),0),'cavaco':pan(ld('cavaco'),0.3),
    'violao':pan(ld('violao'),-0.35),'epiano':ms_wide(ld('epiano'),9.0),'cordas':ld('cordas')}
 P['percussao']=hp(P['percussao'],130); P['baixo']=hp(P['baixo'],35); P['cavaco']=hp(P['cavaco'],250); P['epiano']=hp(P['epiano'],120); P['cordas']=hp(P['cordas'],90)
 for k,c in [('percussao',11.0),('cavaco',10.5),('epiano',12.0),('surdo',17.0),('pratos',14.0)]: P[k]=plim(P[k],c)
 # equilíbrio de Traição (LU contra a soma; mix nominal −14): bateria −5,1 / violões −8,3 / teclado −11,6 / baixo −13,7 / outros −18,8
-TGT={'surdo':-20.5,'percussao':-22.5,'pratos':-29.0,'baixo':-27.7,'cavaco':-23.6,'violao':-26.5,'epiano':-25.6,'cordas':-32.8}
+TGT={'surdo':-20.5,'percussao':-22.5,'pratos':-23.0 if CRASH=='forte' else -29.0,'baixo':-27.7,'cavaco':-23.6,'violao':-26.5,'epiano':-25.6,'cordas':-32.8}
 for k,z in P.items():
     l=mt.integrated_loudness(z); P[k]=z*10**((TGT[k]-l)/20); print(f'{k:10s} {l:6.1f} -> {TGT[k]}')
 room={2:0.0,3:0.4,4:0.2,5:1.0,6:0.5,7:0.7,8:0.1,9:0.111,10:0.7,11:0.2,12:0.2,13:0.467,14:0.4,15:0.3,16:0.0,18:1.0}
@@ -60,7 +72,9 @@ mix=band+voc+vwet
 mix=signal.sosfiltfilt(signal.butter(4,16500,'lowpass',fs=fs,output='sos'),mix,axis=0)
 f=int(2.5*fs); fade=np.ones(N); fade[-f:]=np.linspace(1,0,f)**2; mix*=fade[:,None]; band*=fade[:,None]
 G=10**((-16-mt.integrated_loudness(mix))/20); mix*=G
+_pk=np.abs(mix).max()
+if _pk>10**(-1/20): G*=10**(-1/20)/_pk; mix*=10**(-1/20)/_pk     # pancada nova: nunca passar de −1 dBFS na mix sem master
 inst=(band)*G; voz=(voc+vwet)*G*fade[:,None]
-for nm,z in [('Mente_Vit_Traicao_mix_sem_master',mix),('Mente_Vit_Traicao_instrumental',inst),('Mente_Vit_Traicao_voz',voz)]:
+for nm,z in [(OUT+'_mix_sem_master',mix),(OUT+'_instrumental',inst)]:
     sf.write(f'/home/claude/vt/{nm}.wav',z.astype(np.float32),fs,subtype='PCM_24'); print(nm, 'LUFS %.1f pico %.1f dBFS'%(mt.integrated_loudness(z),20*np.log10(np.abs(z).max())))
 np.save(f'{W}/gdb.npy',gdb.astype(np.float32))

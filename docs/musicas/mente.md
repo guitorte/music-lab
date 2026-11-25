@@ -65,3 +65,16 @@ Voz −1 LU abaixo do contorno de Traição (preferência por voz integrada). Ag
 pós-codec −2,3 (MP3), −1,7 (Opus), −0,7 (AAC do ffmpeg). Teto −2,6 dBTP: com −2 o AAC do ffmpeg passava de 0 depois que o surdo
 ganhou ataque.
 
+### Entrada do refrão como na master v2 aprovada
+
+Autor: "falta alguma coisa na entrada do refrão, um drop, crash, mais barulho na percussão"; depois mandou a
+`Mente_final_master_v2` (original do Suno, aprovada) como referência. Medido nos stems da Vit (`vt_entrada2.py`):
+na v2 **a banda inteira some** (−180 dB) de 2 semicolcheias antes do tempo 1 até a 3ª semicolcheia do refrão, só a voz
+fica; o surdo volta na 3ª 16ª e o resto no 2º tempo. Prato fraco (−3,5 dB) e agudos iguais (−17,9 contra −17,8 dB): o
+impacto vem do corte, não do crash nem de mais percussão.
+
+Aplicado: mesmo buraco nos dois refrões; pancada na 3ª 16ª (surdo dobrado + baixo + tantã/pandeiro/repique + crash);
+Rhodes e cordas voltam no 2º tempo. Pancada sobre os tempos seguintes: +9,3 a +10,3 dB (v2 ≈ +18; a levada de Traição tem
+mais grave no corpo do refrão). Duas versões: crash normal (−3,1/−3,6 dB, como a v2) e forte (GM + VCSL, +3 dB em 8 kHz:
++4,0/+4,2 dB). Masters −13 LUFS, teto −2,8 dBTP (com −2,6 o AAC do ffmpeg dava +0,7), limiter p99 2,1 dB.
+
