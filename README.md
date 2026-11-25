@@ -27,7 +27,9 @@ lib/dsp.py             EQ, envelopes, transient shaper, estágio rápido, limite
 lib/metrics.py         true peak pós-codec, punch, acentos por semicolcheia, camadas, equilíbrio de stems
 tools/master.py        cadeia de masterização padrão (CLI)
 tools/groove_report.py raio-x de groove/mix de uma pasta de stems vs a referência ao vivo
+tools/alinhar_palavras.py tempo de cada palavra cantada (WhisperX, alinhamento forçado em PT)
 tools/arrange/         reescrita de arranjo em MIDI (rw1–rw7, primeira versão, parâmetros por música)
+colab/                 notebook Colab: instrumentos SFZ (sfizz), alinhamento de palavras, segundo ouvido
 skills/                skill "mastering-ai-tracks" (instruções compactas para uma sessão de IA)
 arquivo/               scripts originais das sessões, como foram rodados (caminhos fixos)
 ```
@@ -36,6 +38,7 @@ arquivo/               scripts originais das sessões, como foram rodados (camin
 pip install -r requirements.txt          # + ffmpeg e fluidsynth/fluid-soundfont-gm no sistema
 python tools/master.py mix.wav saida --target -12 --ceiling -2 --ride 46:83 --ride 104.75:171.5 --verse 17:33
 python tools/groove_report.py pasta_de_stems --bpm 90
+python tools/alinhar_palavras.py voz.wav letra.srt palavras.json
 ```
 
 ## Repositórios irmãos

@@ -137,7 +137,7 @@ Fora do fluxo principal, mas úteis em qualquer trabalho de voz e áudio. Clonar
 
 | Recurso | O que é | Link |
 |---|---|---|
-| ⭐ WhisperX | Tempo por palavra com alinhamento forçado; mais preciso que o whisper puro nos breques | https://github.com/m-bain/whisperX |
+| ✅ WhisperX | Tempo por palavra com alinhamento forçado. Testado: ver abaixo; virou `tools/alinhar_palavras.py` | https://github.com/m-bain/whisperX |
 | lyric-align | A letra já está certa, só faltam os tempos; exporta LRC, SRT, ASS, JSON | https://pypi.org/project/lyric-align/ |
 | UltraSinger | Letra + nota cantada por palavra (formato karaokê) | https://github.com/rakuri255/UltraSinger |
 | Montreal Forced Aligner | Alinhador tradicional por fonemas | https://github.com/MontrealCorpusTools/Montreal-Forced-Aligner |
@@ -156,7 +156,7 @@ Fora do fluxo principal, mas úteis em qualquer trabalho de voz e áudio. Clonar
 
 | Recurso | O que é | Link |
 |---|---|---|
-| ⭐ DawDreamer | Hospeda instrumentos e efeitos VST, Faust, automação e time-stretch; roda no Linux. Renderizar o MIDI com VSTs gratuitos em vez do banco GM | https://github.com/DBraun/DawDreamer |
+| ✅ DawDreamer | Hospeda instrumentos e efeitos VST3, Faust, automação. Testado: funciona sem tela; falta instrumento bom (ver abaixo) | https://github.com/DBraun/DawDreamer |
 | pedalboard | Spotify: efeitos prontos e plugins VST3 | https://github.com/spotify/pedalboard |
 
 ### Gerar a música inteira (aberto)
@@ -172,8 +172,8 @@ Fora do fluxo principal, mas úteis em qualquer trabalho de voz e áudio. Clonar
 
 | Recurso | O que é | Link |
 |---|---|---|
-| ⭐ Qwen3-Omni Captioner | Descrições detalhadas de qualquer áudio, Apache 2.0. Conferir "o refrão entra explosivo?" antes de entregar | https://huggingface.co/Qwen/Qwen3-Omni-30B-A3B-Captioner |
-| Music Flamingo | NVIDIA, especializado em música (pesquisa, não comercial) | https://huggingface.co/nvidia/music-flamingo-hf |
+| Qwen3-Omni Captioner | Descrições detalhadas de qualquer áudio, Apache 2.0. 30B: não roda aqui; o Space oficial falhou em 25/11/2026 | https://huggingface.co/Qwen/Qwen3-Omni-30B-A3B-Captioner |
+| ✅ Music Flamingo | NVIDIA, especializado em música (pesquisa, não comercial). Testado: errou tempo e gênero (ver abaixo) | https://huggingface.co/nvidia/music-flamingo-hf |
 | MOSS-Audio | 4B e 8B, instruct e thinking | https://github.com/OpenMOSS/MOSS-Audio |
 | Eureka-Audio | 1,7B, compete com modelos de 4 a 18 vezes maiores | https://github.com/Alittleegg/Eureka-Audio |
 
@@ -183,6 +183,47 @@ Fora do fluxo principal, mas úteis em qualquer trabalho de voz e áudio. Clonar
 2. All-In-One para gerar o mapa de seções automaticamente.
 3. BRID para tirar moldes de groove por instrumento, em vez de um molde único.
 4. ACE-Step 1.5 (cover/repaint) e YingMusic-Singer (troca de palavras), quando houver GPU (Colab).
-5. DawDreamer com VSTs gratuitos para renderizar o MIDI melhor que o banco GM.
-6. WhisperX no lugar do whisper para os tempos dos breques.
-7. Qwen3-Omni Captioner como segundo ouvido antes de cada entrega.
+5. Refazer os breques da versão Vit com os tempos do WhisperX (4 de 7 voltas da banda mudam uma semicolcheia).
+6. ✅ Feito: `colab/Music_Lab_Colab.ipynb` (sfizz + instrumentos SFZ, WhisperX, segundo ouvido com token). Falta ouvir o A/B do sfizz contra o sampler atual.
+
+## Resultados dos testes (25/11/2026, "Mente" versão Vit)
+
+**WhisperX: adotar.** Alinhamento forçado (wav2vec2 português) sobre as linhas do whisper, no stem de voz.
+Medido contra a própria voz:
+
+| | whisper (faster-whisper medium) | WhisperX |
+|---|---|---|
+| Início de frase (29 ataques após pausa), erro mediano | 213 ms, sempre atrasado | 71 ms |
+| Início de frase, p90 | 301 ms | 139 ms |
+| Todas as palavras (onset mais próximo), mediana | 39 ms | 24 ms |
+
+Nos breques, as palavras que disparam o golpe já batiam (±0,15 s) e não mudam de semicolcheia. A volta da
+banda ("o amor", "amo") muda uma semicolcheia em 4 de 7 breques, e o WhisperX fica mais perto do ataque real
+em 4 desses. Exemplo: 1º breque, voz em 57,24 s; whisper põe a volta em 57,61 s, WhisperX em 57,28 s.
+Instalação sem trocar o torch: `pip install --no-deps whisperx` + `transformers nltk omegaconf`; o script
+dispensa torchaudio e o punkt do NLTK. Modelo: `jonatasgrosman/wav2vec2-large-xlsr-53-portuguese` (1,26 GB).
+
+**DawDreamer: funciona, mas aqui não melhora o som.** Carrega VST3 sem tela (Dragonfly Hall/Plate/Room,
+plugins DPF via apt) e renderiza MIDI rápido: 176 s de cavaquinho em 3,8 s. O gargalo é o instrumento:
+os VST3 de qualidade (sfizz, Surge XT, Vital) só saem de downloads do GitHub, bloqueados neste ambiente, e o
+apt só tem sintetizadores simples (Kars, Nekobi). O A/B do cavaquinho (sampler atual × Kars) está em
+`vit/AB_cavaco_sampler_vs_DawDreamer_Kars.mp3` (fora do git). Ganho imediato possível: reverbs Dragonfly na
+cadeia em Python. Ganho real (instrumentos): rodar com sfizz + bibliotecas SFZ num Colab.
+
+**sfizz_render: o caminho para instrumentos sem DAW.** Para tocar bibliotecas SFZ não precisa do DawDreamer: o
+`sfizz_render` (linha de comando do sfizz) lê `.sfz` + `.mid` e grava o WAV. Compilado aqui da fonte
+(`sfztools/sfizz`, só o alvo `sfizz_render`, ~10 min em 2 núcleos), vira um binário de 2,7 MB que só depende da libc.
+Renderizou o e-piano da Vit (jRhodes3d) em 7 s e o baixo (growlybass) em 15 s; o atraso contra o sampler em Python ficou
+entre 0 e −10 ms. A/B com volume igualado: `sfz_ab/AB_epiano_sampler_atual_vs_sfizz.mp3` e `AB_baixo_...` (fora do git).
+VSCO-2-CE e VCSL não publicam `.sfz`; a coleção `sfzinstruments/mappings` também não tem mapeamento deles.
+
+**Segundo ouvido: não confiável para groove.** O Space do Qwen3-Omni Captioner falha no back-end (API
+DashScope), até com 10 s. O Music Flamingo (Space da NVIDIA) respondeu uma vez antes de esgotar a cota anônima
+de GPU. No trecho pré-refrão → refrão:
+
+- acertou: tonalidade (Dó maior; acordes reais Em7–Am7–Fmaj7–G7–C), um verso da letra, voz em português;
+- errou: tempo (166,7 BPM; o real é 89), gênero ("pop com sertanejo"; é pagode), instrumentos ("bateria
+  eletrônica, congas, synth pads"; não citou cavaquinho nem surdo), e inventou um "refrão final" num trecho de 28 s.
+
+A pergunta que interessava ("a mudança de seção é uma subida clara?") não rodou por falta de cota. Com token
+do Hugging Face a cota aumenta; até lá, as medidas do `groove_report.py` continuam sendo o juiz.
