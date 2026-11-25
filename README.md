@@ -17,6 +17,7 @@ Um estúdio feito de método: pegar músicas geradas por IA a partir das letras 
 | [05 · Reescrita de arranjo](docs/05-reescrita-de-arranjo.md) | MIDI novo sob a voz original, render, mix, master |
 | [06 · Transcrição MIDI](docs/06-transcricao-midi.md) | motores, montagem REMI, defeitos do Basic Pitch, percussão real |
 | [07 · Lições](docs/07-licoes.md) | erros já cometidos e o princípio de cada um |
+| [08 · Recursos](docs/08-recursos.md) | modelos, repositórios e ferramentas por etapa (pesquisa de nov. 2026) |
 | [Diário de faixas](docs/faixas.md) | cada música, o que foi feito e com quais números |
 
 ## Código
