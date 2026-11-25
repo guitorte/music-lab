@@ -78,6 +78,24 @@ def accent_template(drums, fs, a=0, b=None, start_bpm=90):
     return acc, micro, float(np.median(60 / ibi))
 
 
+def slot_presence(drums, fs, a=0, b=None, start_bpm=90, lo=6000, hi=16000):
+    """Em quantos tempos cada semicolcheia é tocada (%), nos agudos da bateria (platinelas, ganzá, chimbal).
+
+    Complementa accent_template, que mede só a força QUANDO há golpe: uma posição tocada raramente mas
+    com força aparece "forte" lá (Traição, nov. 2026: 3ª semicolcheia 1.6x a 1ª) e quase vazia aqui.
+    Traição (pagode romântico gravado), por esta função: 88 / 34 / 78 / 71 %. Compare só números desta função.
+    """
+    import librosa, scipy.signal as ss
+    sr = 22050; seg = drums[int(a * fs):int(b * fs) if b else None]
+    d = librosa.resample((seg.mean(1) if seg.ndim == 2 else seg).astype(np.float32), orig_sr=fs, target_sr=sr)
+    _, beats = librosa.beat.beat_track(y=d, sr=sr, hop_length=256, units='time', start_bpm=start_bpm, tightness=400)
+    sos = ss.butter(4, [lo, min(hi, sr / 2 - 100)], btype='bandpass', fs=sr, output='sos')
+    on = librosa.onset.onset_detect(y=ss.sosfiltfilt(sos, d).astype(np.float32), sr=sr, hop_length=64, units='time')
+    i = np.searchsorted(beats, on) - 1; ok = (i >= 0) & (i < len(beats) - 1); on, i = on[ok], i[ok]
+    sl = np.round((on - beats[i]) / (beats[i + 1] - beats[i]) * 4).astype(int); nx = sl == 4; sl[nx] = 0; i[nx] += 1
+    return np.array([100 * len(np.unique(i[sl == k])) / (len(beats) - 1) for k in range(4)])
+
+
 def active(z, fs, win=0.05, below=30):
     """Quadros em que um stem está "tocando" (até `below` dB abaixo do seu p95)."""
     e = frames_db(z, fs, win); return e > np.percentile(e, 95) - below
