@@ -78,3 +78,19 @@ Rhodes e cordas voltam no 2º tempo. Pancada sobre os tempos seguintes: +9,3 a +
 mais grave no corpo do refrão). Duas versões: crash normal (−3,1/−3,6 dB, como a v2) e forte (GM + VCSL, +3 dB em 8 kHz:
 +4,0/+4,2 dB). Masters −13 LUFS, teto −2,8 dBTP (com −2,6 o AAC do ffmpeg dava +0,7), limiter p99 2,1 dB.
 
+## Vit original + camada sintetizada nos vazios (25/11/2026)
+
+Pedido: "preencher os buracos e vazios da música com sons sintetizados, mas deixando o grosso da música". Base: `mt/edit.wav`
+(a fonte da master v2 aprovada); stems só para achar os vazios (`sy_gaps.py`). Achado: a cama harmônica é só o violão; piano e
+"other" ficam mudos (−51 a −139 dB) em versos, pré e refrões e só aparecem na intro, no solo e no fim.
+
+- **Pad** (saws desafinadas em tabela, ataque 0,35 s, passa-faixa 180 Hz–1,3/3 kHz por seção, abre no pré), acordes de
+  `chords.npz`, cede 2,5 dB quando a voz canta; fora da intro e do solo.
+- **Plucks** em arpejo de 16ªs acima da voz (C5–D6) só nas pausas da voz ≥ 0,55 s (MIDI da voz), delay em colcheia pontuada.
+- **Paradas preservadas**: bateria + baixo + violão mudos ≥ 0,2 s (10 paradas reais, incl. o drop dos refrões) → síntese em
+  silêncio digital.
+
+Resultado (`sy_check.py`): buracos da cama (p10 por tempo) de −9,5…−1,4 para −1,7…+1,4 dB rel. ao refrão; camada −18 a −23 LU
+abaixo da mix; voz 16 dB acima da síntese em 1–4 kHz enquanto canta. Masters A (original) e B (com síntese) na mesma cadeia
+(`tools/master.py`, −11 LUFS, −2,4 dBTP, ride 2,0 nos refrões como a v2; intro −2,5 dB como a v2) + A/B com volume igualado.
+
