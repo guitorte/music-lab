@@ -184,7 +184,7 @@ Fora do fluxo principal, mas úteis em qualquer trabalho de voz e áudio. Clonar
 3. BRID para tirar moldes de groove por instrumento, em vez de um molde único.
 4. ACE-Step 1.5 (cover/repaint) e YingMusic-Singer (troca de palavras), quando houver GPU (Colab).
 5. Refazer os breques da versão Vit com os tempos do WhisperX (4 de 7 voltas da banda mudam uma semicolcheia).
-6. DawDreamer + sfizz (SFZ) ou Surge XT num ambiente que baixe do GitHub (Colab).
+6. ✅ Feito: `colab/Music_Lab_Colab.ipynb` (sfizz + instrumentos SFZ, WhisperX, segundo ouvido com token). Falta ouvir o A/B do sfizz contra o sampler atual.
 
 ## Resultados dos testes (25/11/2026, "Mente" versão Vit)
 
@@ -209,6 +209,13 @@ os VST3 de qualidade (sfizz, Surge XT, Vital) só saem de downloads do GitHub, b
 apt só tem sintetizadores simples (Kars, Nekobi). O A/B do cavaquinho (sampler atual × Kars) está em
 `vit/AB_cavaco_sampler_vs_DawDreamer_Kars.mp3` (fora do git). Ganho imediato possível: reverbs Dragonfly na
 cadeia em Python. Ganho real (instrumentos): rodar com sfizz + bibliotecas SFZ num Colab.
+
+**sfizz_render: o caminho para instrumentos sem DAW.** Para tocar bibliotecas SFZ não precisa do DawDreamer: o
+`sfizz_render` (linha de comando do sfizz) lê `.sfz` + `.mid` e grava o WAV. Compilado aqui da fonte
+(`sfztools/sfizz`, só o alvo `sfizz_render`, ~10 min em 2 núcleos), vira um binário de 2,7 MB que só depende da libc.
+Renderizou o e-piano da Vit (jRhodes3d) em 7 s e o baixo (growlybass) em 15 s; o atraso contra o sampler em Python ficou
+entre 0 e −10 ms. A/B com volume igualado: `sfz_ab/AB_epiano_sampler_atual_vs_sfizz.mp3` e `AB_baixo_...` (fora do git).
+VSCO-2-CE e VCSL não publicam `.sfz`; a coleção `sfzinstruments/mappings` também não tem mapeamento deles.
 
 **Segundo ouvido: não confiável para groove.** O Space do Qwen3-Omni Captioner falha no back-end (API
 DashScope), até com 10 s. O Music Flamingo (Space da NVIDIA) respondeu uma vez antes de esgotar a cota anônima

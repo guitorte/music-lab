@@ -52,12 +52,13 @@ def ler_linhas(p):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('voz'); ap.add_argument('letra'); ap.add_argument('saida'); ap.add_argument('--lang', default='pt')
+    ap.add_argument('--device', default='cpu', help="'cuda' no Colab com GPU")
     a = ap.parse_args()
     v, fs = sf.read(a.voz, always_2d=True)
     y = librosa.resample(v.mean(1).astype(np.float32), orig_sr=fs, target_sr=16000)
     segs = ler_linhas(a.letra)
-    modelo, meta = A.load_align_model(a.lang, 'cpu')
-    r = A.align(segs, modelo, meta, y, 'cpu', return_char_alignments=False)
+    modelo, meta = A.load_align_model(a.lang, a.device)
+    r = A.align(segs, modelo, meta, y, a.device, return_char_alignments=False)
     W = [[w.get('start'), w.get('end'), w['word']] for s in r['segments'] for w in s['words']]
     json.dump({'words': W}, open(a.saida, 'w'), ensure_ascii=False)
     print(f'{len(W)} palavras, {sum(w[0] is None for w in W)} sem tempo -> {a.saida}')

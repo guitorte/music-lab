@@ -29,6 +29,7 @@ tools/master.py        cadeia de masterização padrão (CLI)
 tools/groove_report.py raio-x de groove/mix de uma pasta de stems vs a referência ao vivo
 tools/alinhar_palavras.py tempo de cada palavra cantada (WhisperX, alinhamento forçado em PT)
 tools/arrange/         reescrita de arranjo em MIDI (rw1–rw7, primeira versão, parâmetros por música)
+colab/                 notebook Colab: instrumentos SFZ (sfizz), alinhamento de palavras, segundo ouvido
 skills/                skill "mastering-ai-tracks" (instruções compactas para uma sessão de IA)
 arquivo/               scripts originais das sessões, como foram rodados (caminhos fixos)
 ```
